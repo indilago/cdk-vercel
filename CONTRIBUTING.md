@@ -16,3 +16,19 @@ pnpm build       # dist/ + assets/handler
   didn't declare.
 - Never log or put secret values (token, resolved secrets, decrypted env values, bypass secrets)
   in errors. Add values to the `Redactor` as soon as they are known.
+
+## Releasing
+
+Releases publish to npm from GitHub Actions with
+[trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC, no npm token), and npm
+attaches provenance automatically.
+
+1. On a branch, bump `version` in `package.json` and add a `CHANGELOG.md` entry. Open a PR and merge it.
+2. Tag the merge commit on `main` and push the tag:
+
+   ```sh
+   git tag -a v0.1.2 -m v0.1.2 && git push origin v0.1.2
+   ```
+
+`.github/workflows/release.yml` checks that the tag matches `package.json`, runs lint, typecheck,
+tests and build, then runs `npm publish`. If the version is already on npm it skips publishing.
