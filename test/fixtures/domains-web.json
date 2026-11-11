@@ -1,0 +1,5 @@
+[
+  { "name": "acme-web.vercel.app", "apexName": "vercel.app", "projectId": "prj_web000000000000000000001", "redirect": null, "redirectStatusCode": null, "gitBranch": null, "customEnvironmentId": null, "verified": true },
+  { "name": "app.example.com", "apexName": "example.com", "projectId": "prj_web000000000000000000001", "redirect": null, "redirectStatusCode": null, "gitBranch": null, "customEnvironmentId": null, "verified": true },
+  { "name": "app.example.dev", "apexName": "example.dev", "projectId": "prj_web000000000000000000001", "redirect": null, "redirectStatusCode": null, "gitBranch": null, "customEnvironmentId": null, "verified": true }
+]

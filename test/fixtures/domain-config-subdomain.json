@@ -1,0 +1,7 @@
+{
+  "configuredBy": "CNAME",
+  "acceptedChallenges": ["http-01"],
+  "misconfigured": false,
+  "recommendedIPv4": [{ "rank": 1, "value": ["216.198.79.1"] }, { "rank": 2, "value": ["76.76.21.21"] }],
+  "recommendedCNAME": [{ "rank": 1, "value": "d1d4fc829fe7bc7c.vercel-dns-017.com." }, { "rank": 2, "value": "cname.vercel-dns.com." }]
+}

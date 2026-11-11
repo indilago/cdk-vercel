@@ -1,0 +1,7 @@
+node_modules
+dist
+assets
+cdk.out
+coverage
+*.tsbuildinfo
+.DS_Store

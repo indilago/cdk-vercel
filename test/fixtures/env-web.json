@@ -1,0 +1,9 @@
+[
+  { "key": "NEXT_PUBLIC_API_URL", "type": "sensitive", "target": ["preview"], "gitBranch": "staging", "plain": "https://api.staging.example.com" },
+  { "key": "NEXT_PUBLIC_API_URL", "type": "sensitive", "target": ["production"], "gitBranch": null, "plain": "https://api.example.com" },
+  { "key": "NEXT_PUBLIC_API_URL", "type": "encrypted", "target": ["preview", "development"], "gitBranch": null, "plain": "https://api.dev.example.com" },
+  { "key": "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "type": "encrypted", "target": ["preview", "development"], "gitBranch": null, "plain": "pk_test_123" },
+  { "key": "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "type": "encrypted", "target": ["production"], "gitBranch": null, "plain": "pk_live_456" },
+  { "key": "NEXT_PUBLIC_SENTRY_DSN", "type": "encrypted", "target": ["production"], "gitBranch": null, "plain": "https://abc@o1.ingest.sentry.io/1" },
+  { "key": "MARKETPLACE_DATABASE_URL", "type": "encrypted", "target": ["production", "preview"], "gitBranch": null, "configurationId": "icfg_123", "plain": "postgres://x" }
+]

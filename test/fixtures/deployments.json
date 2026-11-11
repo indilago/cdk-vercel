@@ -1,0 +1,4 @@
+[
+  { "uid": "dpl_new", "name": "acme-help", "url": "acme-help-abc123.vercel.app", "state": "CANCELED", "readyState": "CANCELED", "target": null, "createdAt": 1762800100000, "inspectorUrl": "https://vercel.com/acme/acme-help/dpl_new", "meta": { "githubCommitSha": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678", "githubCommitRef": "staging" } },
+  { "uid": "dpl_other_branch", "name": "acme-help", "url": "acme-help-zzz.vercel.app", "state": "READY", "readyState": "READY", "target": "production", "createdAt": 1762800000000, "inspectorUrl": "https://vercel.com/acme/acme-help/dpl_other_branch", "meta": { "githubCommitSha": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678", "githubCommitRef": "production" } }
+]

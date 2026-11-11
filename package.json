@@ -1,0 +1,80 @@
+{
+  "name": "cdk-vercel",
+  "version": "0.1.0",
+  "description": "Manage Vercel projects (settings, env vars, domains, DNS, deployment protection) as AWS CDK constructs, plus a drift gate and deployment waiter for pipelines.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/indilago/cdk-vercel.git"
+  },
+  "homepage": "https://github.com/indilago/cdk-vercel#readme",
+  "bugs": {
+    "url": "https://github.com/indilago/cdk-vercel/issues"
+  },
+  "keywords": [
+    "aws-cdk",
+    "cdk",
+    "vercel",
+    "infrastructure-as-code",
+    "custom-resource",
+    "drift-detection"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "default": "./dist/runtime/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "cdk-vercel": "dist/cli/index.js"
+  },
+  "files": [
+    "dist",
+    "assets",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "rimraf dist assets && tsc -p tsconfig.build.json && node scripts/bundle-handler.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "prepublishOnly": "pnpm run build && pnpm test"
+  },
+  "peerDependencies": {
+    "aws-cdk-lib": "^2.180.0",
+    "constructs": "^10.0.0"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-route-53": "^3.1166.0",
+    "@aws-sdk/client-secrets-manager": "^3.1166.0",
+    "@biomejs/biome": "^2.6.6",
+    "@types/aws-lambda": "^8.10.164",
+    "@types/node": "^24.19.2",
+    "aws-cdk-lib": "2.239.0",
+    "constructs": "10.5.1",
+    "esbuild": "^0.25.12",
+    "rimraf": "^6.1.4",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  },
+  "packageManager": "pnpm@10.18.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}
