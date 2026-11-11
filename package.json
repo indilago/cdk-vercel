@@ -1,6 +1,6 @@
 {
   "name": "cdk-vercel",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Manage Vercel projects (settings, env vars, domains, DNS, deployment protection) as AWS CDK constructs, plus a drift gate and deployment waiter for pipelines.",
   "license": "Apache-2.0",
   "repository": {

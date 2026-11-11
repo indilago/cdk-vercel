@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2 (2026-11-10)
+
+- Published from GitHub Actions with npm trusted publishing, with provenance. No library changes.
+
 ## 0.1.1 (2026-11-10)
 
 - Treat a live domain redirect with a null status code as the 307 default, so it no longer
