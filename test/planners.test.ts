@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { LiveEnvVar, LiveProject } from '../src/runtime/api-types';
+import type { LiveDeployment, LiveEnvVar, LiveProject } from '../src/runtime/api-types';
+import { DeploymentFailedError } from '../src/runtime/deployments';
 import { dnsAttributeNames, dnsTargetFromConfig, planDomains } from '../src/runtime/domains';
 import { planEnv } from '../src/runtime/env';
 import { MANAGED_BYPASS_NOTE, planBypass } from '../src/runtime/protection';
@@ -365,5 +366,20 @@ describe('isVerificationRecordFor', () => {
     expect(
       isVerificationRecordFor('help.example.dev', rec('_vercel.example.dev', 'vc-domain-verify=a b')),
     ).toBe(false);
+  });
+});
+
+describe('DeploymentFailedError', () => {
+  it('does not double the period after a message that already ends with one', () => {
+    const err = new DeploymentFailedError('CANCELED', {
+      uid: 'dpl_1',
+      url: 'x.vercel.app',
+      inspectorUrl: 'https://vercel.com/acme/web/1',
+      errorMessage: 'The Ignored Build Step command returned exit code 0.',
+      meta: { githubCommitSha: 'abc', githubCommitRef: 'staging' },
+    } as LiveDeployment);
+    expect(err.message).toBe(
+      'Deployment dpl_1 for abc on staging is CANCELED: The Ignored Build Step command returned exit code 0. Inspect: https://vercel.com/acme/web/1',
+    );
   });
 });
