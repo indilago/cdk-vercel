@@ -35,7 +35,7 @@ export class DeploymentFailedError extends Error {
     super(
       `Deployment ${deployment.uid} for ${shaOf(deployment)?.slice(0, 12) ?? '?'}` +
         `${refOf(deployment) ? ` on ${refOf(deployment)}` : ''} is ${state}` +
-        `${deployment.errorMessage ? `: ${deployment.errorMessage}` : ''}. Inspect: ${deployment.inspectorUrl ?? `https://${deployment.url}`}`,
+        `${deployment.errorMessage ? `: ${deployment.errorMessage.replace(/\.+$/, '')}` : ''}. Inspect: ${deployment.inspectorUrl ?? `https://${deployment.url}`}`,
     );
     this.name = 'DeploymentFailedError';
   }

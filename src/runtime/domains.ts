@@ -52,8 +52,14 @@ export function planDomains(
         changes.push({ field, expected: expected ?? null, actual: actual ?? null });
     };
     cmp('redirect', d.redirect, l.redirect);
+    // Vercel stores a redirect created without a status code as `null` and serves it as 307,
+    // so a live `null` on a redirecting domain is the default, not drift.
     if (d.redirect)
-      cmp('redirectStatusCode', d.redirectStatusCode ?? DEFAULT_REDIRECT_STATUS, l.redirectStatusCode);
+      cmp(
+        'redirectStatusCode',
+        d.redirectStatusCode ?? DEFAULT_REDIRECT_STATUS,
+        l.redirect ? (l.redirectStatusCode ?? DEFAULT_REDIRECT_STATUS) : l.redirectStatusCode,
+      );
     cmp('gitBranch', d.gitBranch, l.gitBranch);
     if (changes.length) updates.push({ op: 'update', decl: d, live: l, changes });
   }
