@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 (2026-11-10)
+
+- Treat a live domain redirect with a null status code as the 307 default, so it no longer
+  shows as drift against a planned 307.
+- Don't double the period after Vercel's deployment error message in `wait-deployment` output.
+- Move pnpm's `onlyBuiltDependencies` setting into `pnpm-workspace.yaml` (no change to the
+  published package).
+
 ## 0.1.0 (2026-11-10)
 
 Initial release.
