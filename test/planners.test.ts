@@ -184,6 +184,29 @@ describe('planDomains', () => {
     ...extra,
   });
 
+  it('treats a live redirect with a null status code as the 307 default', () => {
+    const live307 = [live('example.com', { redirect: 'www.example.com' })];
+    expect(
+      planDomains([{ name: 'example.com', redirect: 'www.example.com' }], live307, false).actions,
+    ).toEqual([]);
+    expect(
+      planDomains(
+        [{ name: 'example.com', redirect: 'www.example.com', redirectStatusCode: 307 }],
+        live307,
+        false,
+      ).actions,
+    ).toEqual([]);
+    const plan = planDomains(
+      [{ name: 'example.com', redirect: 'www.example.com', redirectStatusCode: 308 }],
+      live307,
+      false,
+    );
+    expect(plan.actions).toHaveLength(1);
+    expect(plan.actions[0]).toMatchObject({
+      changes: [{ field: 'redirectStatusCode', expected: 308, actual: 307 }],
+    });
+  });
+
   it('adds plain domains before the redirects that point at them', () => {
     const plan = planDomains(
       [
