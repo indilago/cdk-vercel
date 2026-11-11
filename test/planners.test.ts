@@ -3,6 +3,8 @@ import type { LiveEnvVar, LiveProject } from '../src/runtime/api-types';
 import { dnsAttributeNames, dnsTargetFromConfig, planDomains } from '../src/runtime/domains';
 import { planEnv } from '../src/runtime/env';
 import { MANAGED_BYPASS_NOTE, planBypass } from '../src/runtime/protection';
+import { isVerificationRecordFor } from '../src/runtime/reconcile';
+import { Redactor } from '../src/runtime/redact';
 import { diffSettings, settingsWrites } from '../src/runtime/settings';
 import { validateDeclaration } from '../src/runtime/validate';
 import { fixture } from './fake-vercel';
@@ -310,5 +312,35 @@ describe('validateDeclaration', () => {
       domains: "A.com" is declared more than once.
       domains: "b.com" redirects to itself."
     `);
+  });
+});
+
+describe('Redactor', () => {
+  it('redacts secrets in their JSON-escaped form too', () => {
+    const r = new Redactor();
+    const secret = 'pa"ss\\word\nwith-escapes';
+    r.add(secret);
+    const line = r.redactJson({ error: `bad value ${secret}` });
+    expect(line).not.toContain('pa\\"ss');
+    expect(line).toBe('{"error":"bad value [REDACTED]"}');
+  });
+});
+
+describe('isVerificationRecordFor', () => {
+  const rec = (domain: string, value = 'vc-domain-verify=help.example.dev,0a1b2c') => ({ domain, value });
+  it('accepts _vercel.<apex or parent> with a vc-domain-verify value', () => {
+    expect(isVerificationRecordFor('help.example.dev', rec('_vercel.example.dev'))).toBe(true);
+    expect(isVerificationRecordFor('example.dev', rec('_vercel.example.dev.'))).toBe(true);
+  });
+  it('rejects other names, unrelated zones and other values', () => {
+    expect(isVerificationRecordFor('help.example.dev', rec('example.dev'))).toBe(false);
+    expect(isVerificationRecordFor('help.example.dev', rec('_vercel.attacker.com'))).toBe(false);
+    expect(isVerificationRecordFor('help.example.dev', rec('_vercel.dev'))).toBe(false);
+    expect(
+      isVerificationRecordFor('help.example.dev', rec('_vercel.example.dev', 'v=spf1 include:evil -all')),
+    ).toBe(false);
+    expect(
+      isVerificationRecordFor('help.example.dev', rec('_vercel.example.dev', 'vc-domain-verify=a b')),
+    ).toBe(false);
   });
 });

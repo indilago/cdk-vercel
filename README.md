@@ -483,7 +483,8 @@ last-exported parameters.
   team it manages.
 - **IAM:** the handler can read only the token secret and the secrets your declarations
   reference (`<name>-??????`, never `*`). In the zones you name in `verificationZoneId`, it
-  can list records and change only TXT records.
+  can list records and change only `_vercel.*` TXT records. It also writes only records that
+  match Vercel's verification format, whatever the API response contains.
 - **Redaction:** the token, resolved secret values, decrypted env values and bypass secrets
   are stripped from every log line and error message.
 - **Template:** secret values never appear in the CloudFormation template, parameters or

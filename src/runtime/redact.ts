@@ -9,7 +9,11 @@ export class Redactor {
 
   /** Register a value to redact. Values shorter than 4 characters are ignored to avoid mangling text. */
   add(secret: string | undefined | null): void {
-    if (secret && secret.length >= 4) this.secrets.add(secret);
+    if (!secret || secret.length < 4) return;
+    this.secrets.add(secret);
+    // Log lines are JSON, where quotes, backslashes and control characters appear escaped.
+    const escaped = JSON.stringify(secret).slice(1, -1);
+    if (escaped !== secret) this.secrets.add(escaped);
   }
 
   redact(text: string): string {

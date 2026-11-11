@@ -91,7 +91,7 @@ export class VercelProvider extends Construct {
     );
   }
 
-  /** Allow the handler to read one hosted zone's records and write only its TXT records (domain verification). */
+  /** Allow the handler to read one hosted zone's records and write only `_vercel.*` TXT records (domain verification). */
   grantTxtRecords(hostedZoneId: string): void {
     const zoneId = hostedZoneId.replace(/^\/?hostedzone\//, '');
     if (this.granted.has(`zone:${zoneId}`)) return;
@@ -102,6 +102,9 @@ export class VercelProvider extends Construct {
         resources: [`arn:${Stack.of(this).partition}:route53:::hostedzone/${zoneId}`],
         conditions: {
           'ForAllValues:StringEquals': { 'route53:ChangeResourceRecordSetsRecordTypes': ['TXT'] },
+          'ForAllValues:StringLike': {
+            'route53:ChangeResourceRecordSetsNormalizedRecordNames': ['_vercel.*'],
+          },
         },
       }),
     );

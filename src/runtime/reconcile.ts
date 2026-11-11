@@ -463,6 +463,16 @@ async function reconcileDomains(
       continue;
     }
     for (const r of txt) {
+      // Only write what a Vercel ownership record can legitimately be. A malformed or hostile
+      // response must not be able to write other TXT records (SPF, DKIM, ...) in the zone.
+      if (!isVerificationRecordFor(dom.name, r)) {
+        logger.log('warn', 'ignoring unexpected verification record; add it manually if it is genuine', {
+          ...ctx,
+          domain: dom.name,
+          record: r.domain,
+        });
+        continue;
+      }
       const id = `${dom.verificationZoneId}|${r.domain.toLowerCase()}`;
       const entry = pendingTxt.get(id) ?? {
         zoneId: dom.verificationZoneId,
@@ -496,6 +506,19 @@ async function reconcileDomains(
       });
     }
   }
+}
+
+/**
+ * A Vercel verification record is `_vercel.<suffix>` where `<suffix>` is the domain or one of
+ * its parents (normally the apex), with a `vc-domain-verify=` value.
+ */
+export function isVerificationRecordFor(domain: string, r: { domain: string; value: string }): boolean {
+  const name = r.domain.toLowerCase().replace(/\.$/, '');
+  const d = domain.toLowerCase();
+  if (!name.startsWith('_vercel.')) return false;
+  const suffix = name.slice('_vercel.'.length);
+  const domainMatches = suffix.includes('.') && (d === suffix || d.endsWith(`.${suffix}`));
+  return domainMatches && /^vc-domain-verify=[\x21-\x7e]{1,250}$/.test(r.value);
 }
 
 async function reconcileProtection(

@@ -83,6 +83,9 @@ describe('VercelProject', () => {
         Action: 'route53:ChangeResourceRecordSets',
         Condition: {
           'ForAllValues:StringEquals': { 'route53:ChangeResourceRecordSetsRecordTypes': ['TXT'] },
+          'ForAllValues:StringLike': {
+            'route53:ChangeResourceRecordSetsNormalizedRecordNames': ['_vercel.*'],
+          },
         },
       }),
     );
